@@ -20,9 +20,9 @@ function PostDetail() {
         ...comments,
         {
           id: comments.length + 1,
-          author: "Bạn",
+          author: "You",
           avatar: "/default-avatar.svg",
-          time: "Vừa xong",
+          time: "Just now",
           content: newComment,
           likes: 0,
           replies: [],
@@ -42,9 +42,9 @@ function PostDetail() {
         const mappedComments = Array.isArray(data.comments)
           ? data.comments.map((item) => ({
               id: item.id,
-              author: item.author?.username || "Ẩn danh",
+              author: item.author?.username || "Anonymous",
               avatar: item.author?.avatar || "/default-avatar.svg",
-              time: item.created_at ? new Date(item.created_at).toLocaleDateString("vi-VN") : "",
+              time: item.created_at ? new Date(item.created_at).toLocaleDateString("en-US") : "",
               content: item.content,
               likes: 0,
               replies: [],
@@ -54,7 +54,7 @@ function PostDetail() {
         setError(null);
       } catch (err) {
         console.error("Error fetching post:", err);
-        setError("Không thể tải bài viết");
+        setError("Unable to load the post");
       } finally {
         setLoading(false);
       }
@@ -68,10 +68,10 @@ function PostDetail() {
 
       <div className="flex gap-6 max-w-7xl mx-auto pt-4 px-4">
         {/* Main Content */}
-        <div className="flex-1 max-w-2xl">
+        <div className="flex-1 max-w-7xl">
           {loading && (
             <div className="bg-white rounded-lg shadow-md p-6 text-center">
-              <p>Đang tải bài viết...</p>
+              <p>Loading post...</p>
             </div>
           )}
 
@@ -94,9 +94,9 @@ function PostDetail() {
                       size="md"
                     />
                     <div>
-                      <h3 className="font-bold text-gray-900">{post.author?.username || "Ẩn danh"}</h3>
+                      <h3 className="font-bold text-gray-900">{post.author?.username || "Anonymous"}</h3>
                       <p className="text-gray-500 text-sm">
-                        {post.created_at ? new Date(post.created_at).toLocaleDateString("vi-VN") : ""}
+                        {post.created_at ? new Date(post.created_at).toLocaleDateString("en-US") : ""}
                       </p>
                     </div>
                   </div>
@@ -120,27 +120,27 @@ function PostDetail() {
 
                 {/* Stats */}
                 <div className="flex justify-between text-gray-500 text-sm px-2 py-2 border-b mb-4">
-                  <span>👁 {post.views || 0} lượt xem</span>
+                  <span>👁 {post.views || 0} views</span>
                   <span>👍 {post.likes_count || 0} • 💬 {post.comments_count || 0}</span>
                 </div>
 
                 {/* Actions */}
                 <div className="flex justify-around py-2 mb-4 border-b">
                   <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
-                    👍 Thích
+                    👍 Like
                   </button>
                   <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
-                    💬 Bình luận
+                    💬 Comment
                   </button>
                   <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
-                    🔄 Chia sẻ
+                    🔄 Share
                   </button>
                 </div>
               </div>
 
               {/* Comments Section */}
               <div className="bg-white rounded-lg shadow-md p-6">
-                <h3 className="font-bold text-lg mb-6">Bình luận ({comments.length})</h3>
+                <h3 className="font-bold text-lg mb-6">Comments ({comments.length})</h3>
 
                 {/* Add Comment */}
                 {isLoggedIn && (
@@ -155,7 +155,7 @@ function PostDetail() {
                         type="text"
                         value={newComment}
                         onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="Viết bình luận..."
+                        placeholder="Write a comment..."
                         className="w-full bg-gray-100 rounded-full px-4 py-2 outline-none focus:bg-gray-200 transition"
                       />
                       {newComment.trim() && (
@@ -164,13 +164,13 @@ function PostDetail() {
                             onClick={() => setNewComment("")}
                             className="px-4 py-1 hover:bg-gray-100 rounded font-bold text-gray-700"
                           >
-                            Hủy
+                            Cancel
                           </button>
                           <button
                             onClick={handleAddComment}
                             className="px-4 py-1 bg-blue-600 text-white rounded font-bold hover:bg-blue-700"
                           >
-                            Bình luận
+                            Comment
                           </button>
                         </div>
                       )}
@@ -180,7 +180,7 @@ function PostDetail() {
 
                 {!isLoggedIn && (
                   <div className="mb-6 pb-6 border-b text-center text-gray-500">
-                    <p>Vui lòng đăng nhập để bình luận</p>
+                    <p>Please log in to comment</p>
                   </div>
                 )}
 
@@ -199,8 +199,8 @@ function PostDetail() {
                           <p className="text-gray-700">{comment.content}</p>
                         </div>
                         <div className="text-xs text-gray-500 mt-2 space-x-3">
-                          <span className="font-bold cursor-pointer hover:underline">Thích</span>
-                          <span className="cursor-pointer hover:underline">Trả lời</span>
+                          <span className="font-bold cursor-pointer hover:underline">Like</span>
+                          <span className="cursor-pointer hover:underline">Reply</span>
                           <span>{comment.time}</span>
                         </div>
                         {comment.likes > 0 && (

@@ -30,7 +30,7 @@ function Register() {
     setIsSubmitting(true);
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError("Passwords do not match");
       setIsSubmitting(false);
       return;
     }
@@ -47,12 +47,12 @@ function Register() {
         date_of_birth: formData.dateOfBirth,
       });
 
-      setSuccess("Đăng ký thành công. Chuyển sang trang đăng nhập...");
+      setSuccess("Registration successful. Redirecting to the login page...");
       setTimeout(() => {
         navigate("/login", { replace: true });
       }, 1200);
     } catch (registerError) {
-      setError(registerError.message || "Không thể đăng ký");
+      setError(registerError.message || "Unable to register");
     } finally {
       setIsSubmitting(false);
     }
@@ -63,8 +63,8 @@ function Register() {
       <div className="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-6">
-          <h1 className="text-4xl font-black text-blue-600 mb-2">PBL7</h1>
-          <p className="text-gray-600">Tạo tài khoản mới để bắt đầu</p>
+          <h1 className="text-4xl font-black text-gray-900 mb-2">ABC News</h1>
+          <p className="text-gray-600">Create a new account to get started</p>
         </div>
 
         <form onSubmit={handleSubmit}>
@@ -87,7 +87,7 @@ function Register() {
               name="firstName"
               value={formData.firstName}
               onChange={handleChange}
-              placeholder="Tên"
+              placeholder="First name"
               className="px-4 py-2 bg-gray-100 border-0 rounded-lg outline-none focus:bg-white focus:border-2 focus:border-blue-500 transition"
               required
             />
@@ -96,7 +96,7 @@ function Register() {
               name="lastName"
               value={formData.lastName}
               onChange={handleChange}
-              placeholder="Họ"
+              placeholder="Last name"
               className="px-4 py-2 bg-gray-100 border-0 rounded-lg outline-none focus:bg-white focus:border-2 focus:border-blue-500 transition"
               required
             />
@@ -122,7 +122,7 @@ function Register() {
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              placeholder="Số điện thoại"
+              placeholder="Phone number"
               className="w-full px-4 py-2 bg-gray-100 border-0 rounded-lg outline-none focus:bg-white focus:border-2 focus:border-blue-500 transition"
             />
           </div>
@@ -134,7 +134,7 @@ function Register() {
               name="password"
               value={formData.password}
               onChange={handleChange}
-              placeholder="Mật khẩu"
+              placeholder="Password"
               className="w-full px-4 py-2 bg-gray-100 border-0 rounded-lg outline-none focus:bg-white focus:border-2 focus:border-blue-500 transition"
               required
             />
@@ -147,7 +147,7 @@ function Register() {
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              placeholder="Xác nhận mật khẩu"
+              placeholder="Confirm password"
               className="w-full px-4 py-2 bg-gray-100 border-0 rounded-lg outline-none focus:bg-white focus:border-2 focus:border-blue-500 transition"
               required
             />
@@ -155,7 +155,7 @@ function Register() {
 
           {/* Date of Birth */}
           <div className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">Ngày sinh</label>
+            <label className="block text-gray-700 font-bold mb-2">Date of birth</label>
             <input
               type="date"
               name="dateOfBirth"
@@ -168,9 +168,9 @@ function Register() {
 
           {/* Gender */}
           <div className="mb-6">
-            <label className="block text-gray-700 font-bold mb-2">Giới tính</label>
+            <label className="block text-gray-700 font-bold mb-2">Gender</label>
             <div className="flex gap-4">
-              {["Nam", "Nữ", "Khác"].map((g) => (
+              {["Male", "Female", "Other"].map((g) => (
                 <label key={g} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
@@ -192,14 +192,14 @@ function Register() {
             className="w-full bg-green-600 text-white font-bold text-lg py-3 rounded-lg hover:bg-green-700 transition mb-4 disabled:opacity-60"
             disabled={isSubmitting}
           >
-            {isSubmitting ? "Đang tạo..." : "Tạo tài khoản"}
+            {isSubmitting ? "Creating..." : "Create account"}
           </button>
 
           {/* Login Link */}
           <p className="text-center text-gray-700">
-            Bạn đã có tài khoản?{" "}
+            Already have an account?{" "}
             <Link to="/login" className="text-blue-600 font-bold hover:underline">
-              Đăng nhập
+              Log in
             </Link>
           </p>
         </form>

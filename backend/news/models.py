@@ -12,6 +12,16 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    STATUS_PUBLISHED = 'published'
+    STATUS_HIDDEN = 'hidden'
+    STATUS_BLOCKED = 'blocked'
+
+    STATUS_CHOICES = [
+        (STATUS_PUBLISHED, 'Published'),
+        (STATUS_HIDDEN, 'Hidden'),
+        (STATUS_BLOCKED, 'Blocked'),
+    ]
+
     FEELING_CHOICES = [
         ('happy', '😊 Vui vẻ'),
         ('sad', '😢 Buồn'),
@@ -27,6 +37,10 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.TextField(null=True, blank=True)
     feeling = models.CharField(max_length=20, choices=FEELING_CHOICES, null=True, blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PUBLISHED)
+    moderation_note = models.TextField(blank=True, default='')
+    moderated_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='moderated_posts')
+    moderated_at = models.DateTimeField(null=True, blank=True)
     views = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

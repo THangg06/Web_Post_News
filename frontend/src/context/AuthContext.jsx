@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUserState] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const isAdmin = Boolean(currentUser?.is_staff || currentUser?.is_superuser || currentUser?.role === "admin");
 
   const syncUser = useCallback(async () => {
     try {
@@ -62,6 +63,7 @@ export function AuthProvider({ children }) {
   const value = {
     currentUser,
     isLoggedIn,
+    isAdmin,
     loading,
     logout,
     login,

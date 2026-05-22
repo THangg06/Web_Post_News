@@ -7,6 +7,7 @@ function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
   const { currentUser, isLoggedIn, logout } = useContext(AuthContext);
+  const isAdmin = Boolean(currentUser?.is_staff || currentUser?.is_superuser || currentUser?.role === "admin");
   const [showMenu, setShowMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState(() => {
     const params = new URLSearchParams(location.search);
@@ -37,7 +38,12 @@ function Navbar() {
     <div className="bg-white shadow-md px-6 py-3 flex justify-between items-center sticky top-0 z-50">
       {/* Logo */}
       <div className="flex items-center gap-3">
-        <h1 className="text-2xl font-bold text-red-600">PBL7</h1>
+        <Link
+              to="/"
+              className="text-2xl font-bold text-gray-900"
+            >
+              ABC News
+            </Link>
       </div>
 
       {/* Search Bar */}
@@ -47,14 +53,14 @@ function Navbar() {
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="🔍 Tìm theo tiêu đề hoặc tác giả..."
+            placeholder="🔍 Search by title or author..."
             className="bg-gray-100 px-4 py-2 rounded-full w-full outline-none focus:bg-gray-200 transition"
           />
           <button
             type="submit"
-            className="px-4 py-2 rounded-full bg-blue-600 text-white font-semibold hover:bg-blue-700 transition"
+            className="px-4 py-2 rounded-full bg-gray-600 text-white font-semibold hover:bg-gray-800 transition"
           >
-            Tìm
+            Search
           </button>
         </form>
       </div>
@@ -67,13 +73,13 @@ function Navbar() {
               to="/login"
               className="px-4 py-2 rounded-lg font-medium text-gray-700 hover:bg-gray-100 transition"
             >
-              Đăng nhập
+              Log in
             </Link>
             <Link
               to="/register"
               className="px-4 py-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 transition"
             >
-              Đăng kí
+              Sign up
             </Link>
           </div>
         )}
@@ -95,11 +101,16 @@ function Navbar() {
             {showMenu && (
               <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48">
                 <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 text-gray-800">
-                  👤 Trang cá nhân
+                  👤 Profile
                 </Link>
-                <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 text-gray-800">
+                  {isAdmin && (
+                    <Link to="/moderation" className="block px-4 py-2 hover:bg-gray-100 text-gray-800 border-t">
+                      🛡️ Admin dashboard
+                    </Link>
+                  )}
+                {/* <Link to="/profile" className="block px-4 py-2 hover:bg-gray-100 text-gray-800">
                   ⚙️ Cài đặt
-                </Link>
+                </Link> */}
                 <button
                   onClick={() => {
                     logout();
@@ -107,7 +118,7 @@ function Navbar() {
                   }}
                   className="block w-full text-left px-4 py-2 hover:bg-gray-100 text-gray-800 border-t"
                 >
-                  🚪 Đăng xuất
+                  🚪 Log out
                 </button>
               </div>
             )}

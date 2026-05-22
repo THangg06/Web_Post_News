@@ -18,9 +18,9 @@ function FeaturedStories() {
           id: post.id,
           title: post.title,
           image: post.image,
-          category: post.category?.name || "Chuyên mục",
+          category: post.category?.name || "Category",
           views: post.views ?? 0,
-          author: post.author?.username || "Ẩn danh",
+          author: post.author?.username || "Anonymous",
         }));
         setFeatured(mappedPosts);
       } catch {
@@ -38,12 +38,12 @@ function FeaturedStories() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-6 mb-6">
-      <h2 className="text-white font-bold text-2xl mb-6">⭐ Bài viết mới nhất</h2>
+    <div className="bg-gradient-to-r from-gray-600 to-gray-8A00 rounded-lg shadow-lg p-6 mb-6">
+      <h2 className="text-white font-bold text-2xl mb-6">⭐ Latest Stories</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {featured.length === 0 && (
           <div className="md:col-span-3 bg-white/90 rounded-lg p-4 text-sm text-gray-600 text-center">
-            Chưa có dữ liệu bài viết nổi bật.
+            No featured stories available yet.
           </div>
         )}
 

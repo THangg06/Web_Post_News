@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+const API_BASE_URL = "/api";
 
 function getCookie(name) {
 	const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
@@ -23,13 +23,22 @@ async function request(path, options = {}) {
 		credentials: 'include', // include cookies for session auth
 		...options,
 	});
+	const contentType = response.headers.get("content-type") || "";
+	const responseText = await response.text();
 
 	if (!response.ok) {
-		const errorText = await response.text();
-		throw new Error(errorText || `Request failed with status ${response.status}`);
+		throw new Error(responseText || `Request failed with status ${response.status}`);
 	}
 
-	return response.json();
+	if (contentType.includes("application/json")) {
+		return responseText ? JSON.parse(responseText) : null;
+	}
+
+	if (responseText.trim().startsWith("<!DOCTYPE") || responseText.trim().startsWith("<html")) {
+		throw new Error("API request returned HTML instead of JSON. Restart the frontend dev server so the /api proxy is active.");
+	}
+
+	return responseText ? JSON.parse(responseText) : null;
 }
 
 function toQueryString(params = {}) {
@@ -60,6 +69,24 @@ export async function getFeaturedPosts(limit = 3) {
 export async function getPostDetail(id) {
 	const data = await request(`/posts/${id}/`);
 	return data;
+}
+
+export async function moderatePost(postId, action, payload = {}) {
+	return request(`/posts/${postId}/${action}/`, {
+		method: "POST",
+		body: JSON.stringify(payload),
+	});
+}
+
+export async function getAdminDashboard(params = {}) {
+	return request(`/admin/dashboard/${toQueryString(params)}`);
+}
+
+export async function updateAdminUserRole(userId, payload) {
+	return request(`/admin/users/${userId}/`, {
+		method: "PATCH",
+		body: JSON.stringify(payload),
+	});
 }
 
 export async function getUserPosts(authorId) {

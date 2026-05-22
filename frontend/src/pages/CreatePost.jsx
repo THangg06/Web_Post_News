@@ -48,7 +48,7 @@ function CreatePost() {
   const handlePublish = () => {
     if (formData.title.trim() && formData.content.trim()) {
       console.log("Publish news:", formData);
-      alert("Tin tức đã được đăng!");
+      alert("The post has been published!");
       setFormData({
         title: "",
         description: "",
@@ -73,44 +73,44 @@ function CreatePost() {
           <div className="bg-white rounded-lg shadow-md p-6">
             {/* Header */}
             <div className="mb-6 pb-6 border-b">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">📰 Đăng tin tức mới</h1>
-              <p className="text-gray-600">Chia sẻ tin tức, bài viết chuyên sâu với độc giả</p>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">📰 Publish a New Story</h1>
+              <p className="text-gray-600">Share news and in-depth articles with readers</p>
             </div>
 
             {/* Title */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2">📌 Tiêu đề (Headline) *</label>
+              <label className="block text-gray-700 font-bold mb-2">📌 Title (Headline) *</label>
               <input
                 type="text"
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="Nhập tiêu đề tin tức hấp dẫn..."
+                placeholder="Enter an attention-grabbing title..."
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg outline-none focus:bg-white focus:border-blue-500 transition text-lg font-bold"
                 maxLength="100"
                 required
               />
-              <p className="text-gray-500 text-sm mt-1">{formData.title.length}/100 ký tự</p>
+              <p className="text-gray-500 text-sm mt-1">{formData.title.length}/100 characters</p>
             </div>
 
             {/* Description */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2">📝 Tóm tắt (Summary) *</label>
+              <label className="block text-gray-700 font-bold mb-2">📝 Summary *</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleChange}
-                placeholder="Viết tóm tắt ngắn gọn về tin tức (sẽ hiển thị trong danh sách tin)..."
+                placeholder="Write a short summary of the story (it will appear in listings)..."
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg outline-none focus:bg-white focus:border-blue-500 transition resize-none h-20"
                 maxLength="200"
               />
-              <p className="text-gray-500 text-sm mt-1">{formData.description.length}/200 ký tự</p>
+              <p className="text-gray-500 text-sm mt-1">{formData.description.length}/200 characters</p>
             </div>
 
             {/* Category & Priority */}
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div>
-                <label className="block text-gray-700 font-bold mb-2">🏷️ Chuyên mục *</label>
+                <label className="block text-gray-700 font-bold mb-2">🏷️ Category *</label>
                 <select
                   name="category"
                   value={formData.category}
@@ -126,30 +126,30 @@ function CreatePost() {
               </div>
 
               <div>
-                <label className="block text-gray-700 font-bold mb-2">⭐ Độ ưu tiên</label>
+                <label className="block text-gray-700 font-bold mb-2">⭐ Priority</label>
                 <select
                   name="priority"
                   value={formData.priority}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg outline-none focus:bg-white focus:border-blue-500 transition font-medium"
                 >
-                  <option value="normal">📌 Bình thường</option>
-                  <option value="important">⚡ Quan trọng</option>
-                  <option value="breaking">🔴 Tin nóng</option>
+                  <option value="normal">📌 Normal</option>
+                  <option value="important">⚡ Important</option>
+                  <option value="breaking">🔴 Breaking</option>
                 </select>
               </div>
             </div>
 
             {/* Image Upload */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2">📸 Hình ảnh bìa</label>
+              <label className="block text-gray-700 font-bold mb-2">📸 Cover Image</label>
               <div className="flex gap-4">
                 <div className="flex-1">
                   <label className="flex items-center justify-center gap-2 px-4 py-6 bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-500 transition">
                     <span className="text-2xl">📷</span>
                     <div>
-                      <p className="font-bold text-gray-700">Tải ảnh lên</p>
-                      <p className="text-gray-500 text-sm">hoặc kéo thả file</p>
+                      <p className="font-bold text-gray-700">Upload image</p>
+                      <p className="text-gray-500 text-sm">or drag and drop a file</p>
                     </div>
                     <input
                       type="file"
@@ -171,7 +171,7 @@ function CreatePost() {
                       onClick={() => setFormData(prev => ({ ...prev, image: "" }))}
                       className="mt-2 text-red-600 font-bold text-sm hover:text-red-700"
                     >
-                      ✕ Xóa ảnh
+                      ✕ Remove image
                     </button>
                   </div>
                 )}
@@ -180,17 +180,17 @@ function CreatePost() {
 
             {/* Content Editor */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2">📄 Nội dung bài viết *</label>
+              <label className="block text-gray-700 font-bold mb-2">📄 Article content *</label>
               <textarea
                 name="content"
                 value={formData.content}
                 onChange={handleChange}
-                placeholder="Viết nội dung chi tiết của tin tức tại đây...
+                placeholder="Write the detailed content here...
 
-Bạn có thể sử dụng:
-- Paragraph để chia nhỏ nội dung
-- Dấu * cho danh sách
-- Dấu # cho tiêu đề phụ"
+You can use:
+- Paragraphs to break up content
+- * for lists
+- # for subheadings"
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg outline-none focus:bg-white focus:border-blue-500 transition font-mono resize-none h-64"
               />
               <p className="text-gray-500 text-sm mt-1">{formData.content.length} ký tự</p>
@@ -198,13 +198,13 @@ Bạn có thể sử dụng:
 
             {/* Tags */}
             <div className="mb-6">
-              <label className="block text-gray-700 font-bold mb-2">🏷️ Tags (cách nhau bằng dấu phẩy)</label>
+              <label className="block text-gray-700 font-bold mb-2">🏷️ Tags (comma-separated)</label>
               <input
                 type="text"
                 name="tags"
                 value={formData.tags}
                 onChange={handleChange}
-                placeholder="AI, Machine Learning, Công nghệ, Python"
+                placeholder="AI, Machine Learning, Technology, Python"
                 className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg outline-none focus:bg-white focus:border-blue-500 transition"
               />
               <div className="mt-2 flex flex-wrap gap-2">
@@ -224,7 +224,7 @@ Bạn có thể sử dụng:
             {/* Preview */}
             {(formData.title || formData.description) && (
               <div className="mb-6 pb-6 border-t pt-6 bg-blue-50 rounded-lg p-4">
-                <h3 className="font-bold text-gray-900 mb-3">👁 Xem trước</h3>
+                <h3 className="font-bold text-gray-900 mb-3">👁 Preview</h3>
                 <div className="bg-white rounded-lg overflow-hidden shadow">
                   {formData.image && (
                     <img
@@ -235,13 +235,13 @@ Bạn có thể sử dụng:
                   )}
                   <div className="p-4">
                     <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-bold mb-2">
-                      {categories.find(c => c.id === formData.category)?.label.split(" ")[1]}
+                      {categories.find(c => c.id === formData.category)?.label}
                     </span>
                     <h2 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
-                      {formData.title || "Tiêu đề tin tức"}
+                      {formData.title || "Article title"}
                     </h2>
                     <p className="text-gray-700 text-sm line-clamp-2">
-                      {formData.description || "Tóm tắt nội dung..."}
+                      {formData.description || "Content summary..."}
                     </p>
                   </div>
                 </div>
@@ -251,17 +251,17 @@ Bạn có thể sử dụng:
             {/* Buttons */}
             <div className="flex gap-3 pt-6 border-t">
               <button className="flex-1 px-4 py-3 border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-100 transition">
-                💾 Lưu nháp
+                💾 Save draft
               </button>
               <button
                 onClick={handlePublish}
                 disabled={!formData.title.trim() || !formData.content.trim()}
                 className="flex-1 px-4 py-3 bg-green-600 text-white rounded-lg font-bold hover:bg-green-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
-                🚀 Đăng tin tức
+                🚀 Publish
               </button>
               <button className="px-4 py-3 border border-gray-300 rounded-lg font-bold text-gray-700 hover:bg-gray-100 transition">
-                ⋯ Thêm tùy chọn
+                ⋯ More options
               </button>
             </div>
           </div>

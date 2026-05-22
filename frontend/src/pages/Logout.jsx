@@ -24,7 +24,7 @@ function Logout() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="rounded-lg bg-white px-6 py-4 shadow-md text-gray-700">
-        Đang đăng xuất...
+        Logging out...
       </div>
     </div>
   );

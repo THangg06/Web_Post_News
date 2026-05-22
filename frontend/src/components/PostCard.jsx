@@ -10,17 +10,17 @@ function PostCard({ post = {} }) {
 
   const authorName = typeof post.author === "string"
     ? post.author
-    : post.author?.username || "Ẩn danh";
+    : post.author?.username || "Anonymous";
   const authorAvatar = post.avatar || post.author?.avatar || "/default-avatar.svg";
   const categoryName = typeof post.category === "string"
     ? post.category
-    : post.category?.name || "Công nghệ";
+    : post.category?.name || "Technology";
   const commentCount = Array.isArray(post.comments)
     ? post.comments.length
     : post.comments_count || post.comments || 0;
   const timeLabel = post.time || (post.created_at
-    ? new Date(post.created_at).toLocaleDateString("vi-VN")
-    : "2 giờ trước");
+    ? new Date(post.created_at).toLocaleDateString("en-US")
+    : "2 hours ago");
 
   const handleLike = () => {
     setLiked(!liked);
@@ -28,16 +28,16 @@ function PostCard({ post = {} }) {
   };
 
   const postData = {
+    ...post,
     author: authorName,
     avatar: authorAvatar,
     time: timeLabel,
     title: post.title || "Phát hiện tin giả với AI",
-    content: post.content || "Đây là bài viết về phát hiện tin giả! 🚀 Công nghệ AI ngày càng thông minh.",
+    content: post.content || "This is a post about fake news detection! 🚀 AI technology keeps getting smarter.",
     category: categoryName,
     image: post.image || null,
     views: post.views ?? "2.5K",
     comments_count: commentCount,
-    ...post
   };
 
   return (
@@ -94,7 +94,7 @@ function PostCard({ post = {} }) {
 
       {/* Stats */}
       <div className="flex justify-between text-gray-500 text-sm px-0 py-2 border-b">
-        <span>👁 {postData.views} lượt xem</span>
+        <span>👁 {postData.views} views</span>
         <span>👍 {postData.likes_count || 0} • 💬 {postData.comments_count || 0}</span>
       </div>
 
@@ -108,26 +108,26 @@ function PostCard({ post = {} }) {
                 : "text-gray-600 hover:bg-gray-100"
             }`}
           >
-            {liked ? "👍" : "🤍"} Thích
+            {liked ? "👍" : "🤍"} Like
           </button>
           <button
             onClick={() => setShowComments(!showComments)}
             className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition"
           >
-            💬 Bình luận
+            💬 Comment
         </button>
           <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
-            🔄 Chia sẻ
+            🔄 Share
           </button>
           <button className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 transition">
-            ➡️ Xem thêm
+            ➡️ More
           </button>
         </div>
 
         {/* Comments Section */}
         {showComments && (
           <div className="mt-3 pt-3 border-t space-y-3">
-            <div className="text-sm text-gray-600 mb-3">Bình luận</div>
+            <div className="text-sm text-gray-600 mb-3">Comments</div>
             {[1, 2].map((i) => (
               <div key={i} className="flex gap-2">
                 <img
@@ -138,11 +138,11 @@ function PostCard({ post = {} }) {
                 <div className="flex-1">
                   <div className="bg-gray-100 rounded-lg px-3 py-2">
                     <p className="font-bold text-sm text-gray-900">User {i}</p>
-                    <p className="text-gray-700 text-sm">Bài viết hay lắm! 👍</p>
+                    <p className="text-gray-700 text-sm">Great post! 👍</p>
                   </div>
                   <div className="text-xs text-gray-500 mt-1 space-x-3">
-                    <span className="cursor-pointer hover:underline">Thích</span>
-                    <span className="cursor-pointer hover:underline">Trả lời</span>
+                    <span className="cursor-pointer hover:underline">Like</span>
+                    <span className="cursor-pointer hover:underline">Reply</span>
                   </div>
                 </div>
               </div>
@@ -155,7 +155,7 @@ function PostCard({ post = {} }) {
               />
               <input
                 type="text"
-                placeholder="Viết bình luận..."
+                placeholder="Write a comment..."
                 className="flex-1 bg-gray-100 rounded-full px-3 py-2 outline-none focus:bg-gray-200 transition"
               />
             </div>

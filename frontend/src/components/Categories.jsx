@@ -10,11 +10,11 @@ function Categories({ activeCategory = "all", onCategoryChange = () => {} }) {
       try {
         const data = await getCategories();
         if (!mounted) return;
-        const mapped = [{ id: "all", label: "📰 Tất cả", icon: "📰" }, ...data.map(c => ({ id: c.id, label: c.name }))];
+        const mapped = [{ id: "all", label: "📰 All", icon: "📰" }, ...data.map(c => ({ id: c.id, label: c.name }))];
         setCategories(mapped);
       } catch (e) {
         if (!mounted) return;
-        setCategories([{ id: "all", label: "📰 Tất cả", icon: "📰" }]);
+        setCategories([{ id: "all", label: "📰 All", icon: "📰" }]);
       }
     };
     load();
@@ -33,7 +33,7 @@ function Categories({ activeCategory = "all", onCategoryChange = () => {} }) {
             }}
             className={`px-4 py-2 rounded-full font-medium text-sm transition whitespace-nowrap ${
               String(activeCategory) === String(cat.id)
-                ? "bg-blue-600 text-white"
+                ? "bg-gray-800 text-white"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           >

@@ -14,6 +14,9 @@ def serialize_user(user):
         "last_name": user.last_name,
         "email": user.email,
         "avatar": "/default-avatar.svg",
+        "is_staff": user.is_staff,
+        "is_superuser": user.is_superuser,
+        "role": "admin" if user.is_staff or user.is_superuser else "user",
     }
 
 

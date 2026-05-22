@@ -13,36 +13,36 @@ const fallbackPosts = [
   {
     clientKey: "fallback-1",
     id: 1,
-    title: "Phát hiện tin giả với AI - Bước tiến lớn",
-    author: "Nguyễn Văn A",
+    title: "Fake News Detection with AI - A Major Breakthrough",
+    author: "Nguyen Van A",
     avatar: "/default-avatar.svg",
-    category: "Công nghệ",
-    time: "2 giờ trước",
-    content: "Vừa hoàn thành dự án phát hiện tin giả với AI 🚀 Công nghệ này thực sự tuyệt vời! Sử dụng các thuật toán Machine Learning hiện đại.",
+    category: "Technology",
+    time: "2 hours ago",
+    content: "Just finished a fake news detection project with AI 🚀 This technology is truly impressive! It uses modern machine learning algorithms.",
     image: "https://picsum.photos/600/400?random=1",
     views: "2.5K",
   },
   {
     clientKey: "fallback-2",
     id: 2,
-    title: "Machine Learning là tương lai của công nghệ",
-    author: "Trần Thị B",
+    title: "Machine Learning Is the Future of Technology",
+    author: "Tran Thi B",
     avatar: "/default-avatar.svg",
-    category: "Công nghệ",
-    time: "4 giờ trước",
-    content: "Machine Learning là tương lai! 💡 Cùng nhau học hỏi và phát triển kỹ năng. Những ứng dụng thực tế ngày càng xuất hiện.",
+    category: "Technology",
+    time: "4 hours ago",
+    content: "Machine learning is the future! 💡 Let's keep learning and growing our skills. Real-world applications keep appearing everywhere.",
     image: "https://picsum.photos/600/400?random=2",
     views: "3.1K",
   },
   {
     clientKey: "fallback-3",
     id: 3,
-    title: "Xu hướng công nghệ năm 2024",
-    author: "Lê Văn C",
+    title: "Technology Trends in 2024",
+    author: "Le Van C",
     avatar: "/default-avatar.svg",
-    category: "Công nghệ",
-    time: "6 giờ trước",
-    content: "Ngành công nghệ năm nay có rất nhiều thay đổi mới. Web3, AI, và Cloud Computing tiếp tục phát triển mạnh mẽ.",
+    category: "Technology",
+    time: "6 hours ago",
+    content: "The tech industry is seeing many changes this year. Web3, AI, and cloud computing continue to grow rapidly.",
     image: "https://picsum.photos/600/400?random=3",
     views: "1.8K",
   },
@@ -108,10 +108,10 @@ function Home() {
           clientKey: `api-${post.id}`,
           id: post.id,
           title: post.title,
-          author: post.author?.username || "Ẩn danh",
+          author: post.author?.username || "Anonymous",
           avatar: "/default-avatar.svg",
-          category: post.category?.name || "Chuyên mục",
-          time: post.created_at ? new Date(post.created_at).toLocaleString("vi-VN") : "Vừa xong",
+          category: post.category?.name || "Category",
+          time: post.created_at ? new Date(post.created_at).toLocaleString("en-US") : "Just now",
           content: post.content,
           image: post.image || "",
           views: post.views ?? 0,
@@ -123,7 +123,7 @@ function Home() {
       } catch (fetchError) {
         if (isMounted) {
           console.error("❌ Error loading posts:", fetchError);
-          setError(fetchError.message || "Không tải được dữ liệu từ API");
+          setError(fetchError.message || "Unable to load data from the API");
           const hasFilter = searchKeyword || activeCategory !== "all";
           setPosts(hasFilter ? [] : fallbackPosts);
         }
@@ -159,7 +159,7 @@ function Home() {
 
           {error && (
             <div className="mb-4 rounded-lg border border-yellow-200 bg-yellow-50 px-4 py-3 text-sm text-yellow-800">
-              API chưa phản hồi đúng, đang hiển thị dữ liệu mẫu: {error}
+              The API did not respond correctly, showing sample data: {error}
             </div>
           )}
 
@@ -173,11 +173,11 @@ function Home() {
           <div className="space-y-4">
             {isLoading ? (
               <div className="rounded-lg bg-white p-6 text-center text-gray-500 shadow-md">
-                Đang tải bài viết từ backend...
+                Loading posts from the backend...
               </div>
             ) : searchKeyword && posts.length === 0 ? (
               <div className="rounded-lg bg-white p-6 text-center text-gray-500 shadow-md">
-                Không tìm thấy bài viết nào cho từ khóa "{searchKeyword}".
+                No posts found for keyword "{searchKeyword}".
               </div>
             ) : (
                 posts.map((post, index) => (

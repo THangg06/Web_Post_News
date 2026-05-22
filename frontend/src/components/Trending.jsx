@@ -4,18 +4,18 @@ import { AuthContext } from "../context/AuthContext";
 
 function Trending() {
   const trends = [
-    { topic: "Phát hiện tin giả", posts: "12.5K bài viết" },
-    { topic: "Machine Learning", posts: "8.3K bài viết" },
-    { topic: "Công nghệ AI", posts: "15.2K bài viết" },
-    { topic: "Lập trình Web", posts: "9.8K bài viết" },
-    { topic: "Data Science", posts: "7.1K bài viết" },
+    { topic: "Fake News Detection", posts: "12.5K posts" },
+    { topic: "Machine Learning", posts: "8.3K posts" },
+    { topic: "AI Technology", posts: "15.2K posts" },
+    { topic: "Web Development", posts: "9.8K posts" },
+    { topic: "Data Science", posts: "7.1K posts" },
   ];
 
   return (
     <div className="hidden lg:block w-80">
       {/* Trending */}
       <div className="bg-white rounded-lg shadow-md p-4 mb-4 sticky top-20">
-        <h3 className="font-bold text-gray-900 mb-4 text-lg">🔥 Đang hot</h3>
+        <h3 className="font-bold text-gray-900 mb-4 text-lg">🔥 Trending Now</h3>
         <div className="space-y-3">
           {trends.map((trend, index) => (
             <a
@@ -34,7 +34,7 @@ function Trending() {
 
       {/* Gợi ý
       <div className="bg-white rounded-lg shadow-md p-4 sticky top-80">
-        <h3 className="font-bold text-gray-900 mb-4 text-lg">👥 Gợi ý cho bạn</h3>
+        <h3 className="font-bold text-gray-900 mb-4 text-lg">👥 Suggested for You</h3>
         <div className="space-y-3">
           {[1, 2, 3].map((i) => (
             <div key={i} className="flex items-center justify-between">
@@ -46,11 +46,11 @@ function Trending() {
                 />
                 <div>
                   <p className="font-bold text-sm text-gray-900">User {i}</p>
-                  <p className="text-gray-500 text-xs">100 bạn chung</p>
+                  <p className="text-gray-500 text-xs">100 mutual friends</p>
                 </div>
               </div>
               <button className="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs font-bold hover:bg-blue-700 transition">
-                Thêm
+                Add
               </button>
             </div>
           ))}

@@ -115,13 +115,13 @@ function Profile() {
       const response = await updateProfile(editForm);
       setCurrentUserState(response.user);
       setCurrentUser(response.user);
-      setMessage("Cập nhật hồ sơ thành công!");
+      setMessage("Profile updated successfully!");
       setTimeout(() => {
         setShowEditModal(false);
         setMessage("");
       }, 2000);
     } catch (err) {
-      setError(err.message || "Cập nhật hồ sơ thất bại");
+      setError(err.message || "Unable to update profile");
     } finally {
       setLoading(false);
     }
@@ -134,14 +134,14 @@ function Profile() {
     setMessage("");
 
     if (passwordForm.new_password !== passwordForm.confirm_password) {
-      setError("Mật khẩu xác nhận không khớp");
+      setError("Passwords do not match");
       setLoading(false);
       return;
     }
 
     try {
       await changePassword(passwordForm);
-      setMessage("Thay đổi mật khẩu thành công!");
+      setMessage("Password changed successfully!");
       setTimeout(() => {
         setShowPasswordModal(false);
         setPasswordForm({
@@ -152,7 +152,7 @@ function Profile() {
         setMessage("");
       }, 2000);
     } catch (err) {
-      setError(err.message || "Thay đổi mật khẩu thất bại");
+      setError(err.message || "Unable to change password");
     } finally {
       setLoading(false);
     }
@@ -165,14 +165,14 @@ function Profile() {
     setMessage("");
 
     try {
-      setMessage("Hướng dẫn đặt lại mật khẩu đã được gửi! Vui lòng kiểm tra email.");
+      setMessage("Password reset instructions have been sent! Please check your email.");
       setTimeout(() => {
         setShowForgotModal(false);
         setForgotForm({ identifier: "" });
         setMessage("");
       }, 3000);
     } catch (err) {
-      setError(err.message || "Không thể xử lý yêu cầu");
+      setError(err.message || "Unable to process the request");
     } finally {
       setLoading(false);
     }
@@ -183,7 +183,7 @@ function Profile() {
       <div className="bg-gray-100 min-h-screen">
         <Navbar />
         <div className="flex items-center justify-center h-96">
-          <p className="text-gray-600 text-lg">Vui lòng đăng nhập để xem hồ sơ</p>
+          <p className="text-gray-600 text-lg">Please log in to view your profile</p>
         </div>
       </div>
     );
@@ -195,13 +195,13 @@ function Profile() {
 
       <div className="flex gap-6 max-w-7xl mx-auto pt-4 px-4 pb-8">
         {/* Main Content */}
-        <div className="flex-1 max-w-2xl">
+        <div className="flex-1 max-w-7xl">
           {/* Profile Cover */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden mb-4">
             {/* Cover Photo */}
-            <div className="h-64 bg-gradient-to-r from-blue-400 to-blue-600 relative">
+            <div className="h-64 bg-gradient-to-r from-gray-400 to-gray-600 relative">
               <button className="absolute bottom-4 right-4 bg-white px-4 py-2 rounded-lg font-bold hover:bg-gray-100 transition">
-                📷 Thay ảnh bìa
+                📷 Change cover photo
               </button>
             </div>
 
@@ -215,7 +215,7 @@ function Profile() {
                       className="w-32 h-32 rounded-full border-4 border-white object-cover"
                       alt="Profile"
                     />
-                    <label className="absolute bottom-2 right-2 bg-blue-600 text-white p-2 rounded-full cursor-pointer hover:bg-blue-700 transition">
+                    <label className="absolute bottom-2 right-2 bg-gray-600 text-white p-2 rounded-full cursor-pointer hover:bg-gray-800 transition">
                       📷
                       <input
                         type="file"
@@ -235,9 +235,9 @@ function Profile() {
                 </div>
                 <button
                   onClick={() => setShowEditModal(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-blue-700 transition"
+                  className="bg-gray-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-800 transition"
                 >
-                  ✏️ Chỉnh sửa hồ sơ
+                  ✏️ Edit profile
                 </button>
               </div>
 
@@ -245,16 +245,16 @@ function Profile() {
               <div className="grid grid-cols-3 gap-4 py-4 border-t border-gray-200">
                 <div className="text-center">
                   <p className="text-2xl font-bold text-gray-900">{userPosts.length}</p>
-                  <p className="text-gray-600">Bài viết</p>
+                  <p className="text-gray-600">Posts</p>
                 </div>
-                <div className="text-center">
+                {/* <div className="text-center">
                   <p className="text-2xl font-bold text-gray-900">1.2K</p>
-                  <p className="text-gray-600">Người theo dõi</p>
+                  <p className="text-gray-600">Followers</p>
                 </div>
                 <div className="text-center">
                   <p className="text-2xl font-bold text-gray-900">456</p>
-                  <p className="text-gray-600">Đang theo dõi</p>
-                </div>
+                  <p className="text-gray-600">Following</p>
+                </div> */}
               </div>
 
               {/* Security Buttons */}
@@ -263,13 +263,13 @@ function Profile() {
                   onClick={() => setShowPasswordModal(true)}
                   className="flex-1 bg-orange-100 text-orange-700 px-4 py-2 rounded-lg font-bold hover:bg-orange-200 transition"
                 >
-                  🔐 Đổi mật khẩu
+                  🔐 Change password
                 </button>
                 <button
                   onClick={() => setShowForgotModal(true)}
                   className="flex-1 bg-red-100 text-red-700 px-4 py-2 rounded-lg font-bold hover:bg-red-200 transition"
                 >
-                  ❓ Quên mật khẩu
+                  ❓ Forgot password
                 </button>
               </div>
             </div>
@@ -277,10 +277,10 @@ function Profile() {
 
           {/* User Posts */}
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Bài viết của bạn</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Your posts</h2>
             {userPosts.length === 0 && (
               <div className="bg-white rounded-lg shadow-md p-4 text-gray-600 text-sm">
-                Bạn chưa có bài viết nào.
+                You have not published any posts yet.
               </div>
             )}
             {userPosts.map(post => (
@@ -294,7 +294,7 @@ function Profile() {
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Chỉnh sửa hồ sơ</h2>
+            <h2 className="text-2xl font-bold mb-4">Edit profile</h2>
             
             {message && (
               <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
@@ -310,29 +310,29 @@ function Profile() {
             <form onSubmit={handleEditSubmit} className="space-y-3">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">
-                  Tên
+                  First name
                 </label>
                 <input
                   type="text"
                   name="first_name"
                   value={editForm.first_name}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Nhập tên"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Enter first name"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">
-                  Họ
+                  Last name
                 </label>
                 <input
                   type="text"
                   name="last_name"
                   value={editForm.last_name}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Nhập họ"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Enter last name"
                 />
               </div>
 
@@ -345,8 +345,8 @@ function Profile() {
                   name="email"
                   value={editForm.email}
                   onChange={handleEditChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Nhập email"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Enter email"
                 />
               </div>
 
@@ -357,14 +357,14 @@ function Profile() {
                   className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg font-bold hover:bg-gray-400 transition"
                   disabled={loading}
                 >
-                  Hủy
+                  Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 bg-blue-600 text-white py-2 rounded-lg font-bold hover:bg-blue-700 transition disabled:opacity-60"
+                  className="flex-1 bg-gray-600 text-white py-2 rounded-lg font-bold hover:bg-gray-800 transition disabled:opacity-60"
                   disabled={loading}
                 >
-                  {loading ? "Đang lưu..." : "Lưu thay đổi"}
+                  {loading ? "Saving..." : "Save changes"}
                 </button>
               </div>
             </form>
@@ -376,7 +376,7 @@ function Profile() {
       {showPasswordModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Đổi mật khẩu</h2>
+            <h2 className="text-2xl font-bold mb-4">Change password</h2>
             
             {message && (
               <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
@@ -392,45 +392,45 @@ function Profile() {
             <form onSubmit={handlePasswordSubmit} className="space-y-3">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">
-                  Mật khẩu cũ
+                  Current password
                 </label>
                 <input
                   type="password"
                   name="old_password"
                   value={passwordForm.old_password}
                   onChange={handlePasswordChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Nhập mật khẩu cũ"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Enter current password"
                   required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">
-                  Mật khẩu mới
+                  New password
                 </label>
                 <input
                   type="password"
                   name="new_password"
                   value={passwordForm.new_password}
                   onChange={handlePasswordChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Nhập mật khẩu mới"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Enter new password"
                   required
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">
-                  Xác nhận mật khẩu
+                  Confirm password
                 </label>
                 <input
                   type="password"
                   name="confirm_password"
                   value={passwordForm.confirm_password}
                   onChange={handlePasswordChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Xác nhận mật khẩu"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Confirm password"
                   required
                 />
               </div>
@@ -442,14 +442,14 @@ function Profile() {
                   className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg font-bold hover:bg-gray-400 transition"
                   disabled={loading}
                 >
-                  Hủy
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="flex-1 bg-orange-600 text-white py-2 rounded-lg font-bold hover:bg-orange-700 transition disabled:opacity-60"
                   disabled={loading}
                 >
-                  {loading ? "Đang xử lý..." : "Đổi mật khẩu"}
+                  {loading ? "Processing..." : "Change password"}
                 </button>
               </div>
             </form>
@@ -461,7 +461,7 @@ function Profile() {
       {showForgotModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-2xl font-bold mb-4">Quên mật khẩu</h2>
+            <h2 className="text-2xl font-bold mb-4">Forgot password</h2>
             
             {message && (
               <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg text-sm">
@@ -477,20 +477,20 @@ function Profile() {
             <form onSubmit={handleForgotSubmit} className="space-y-3">
               <div>
                 <label className="block text-sm font-bold text-gray-700 mb-1">
-                  Email hoặc tên đăng nhập
+                  Email or username
                 </label>
                 <input
                   type="text"
                   value={forgotForm.identifier}
                   onChange={handleForgotChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-blue-500"
-                  placeholder="Nhập email hoặc tên đăng nhập"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg outline-none focus:border-gray-500"
+                  placeholder="Enter your email or username"
                   required
                 />
               </div>
 
               <p className="text-sm text-gray-600">
-                Chúng tôi sẽ gửi hướng dẫn đặt lại mật khẩu đến email của bạn.
+                We will send password reset instructions to your email.
               </p>
 
               <div className="flex gap-3 pt-4">
@@ -500,14 +500,14 @@ function Profile() {
                   className="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg font-bold hover:bg-gray-400 transition"
                   disabled={loading}
                 >
-                  Hủy
+                  Cancel
                 </button>
                 <button
                   type="submit"
                   className="flex-1 bg-red-600 text-white py-2 rounded-lg font-bold hover:bg-red-700 transition disabled:opacity-60"
                   disabled={loading}
                 >
-                  {loading ? "Đang xử lý..." : "Gửi yêu cầu"}
+                  {loading ? "Processing..." : "Send request"}
                 </button>
               </div>
             </form>

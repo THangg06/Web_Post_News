@@ -10,6 +10,7 @@ from django.utils.dateparse import parse_date, parse_datetime
 from datetime import datetime, time
 from .models import Post, Category, Comment
 from .serializers import PostSerializer, CategorySerializer, CommentSerializer
+from .predictor import attach_predictions
 import logging
 
 logger = logging.getLogger(__name__)
@@ -97,6 +98,24 @@ class PostViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            posts = list(page)
+            # Only compute predictions for posts that don't already have persisted values
+            needs = [p for p in posts if p.predicted_tag is None and p.fake_probability is None]
+            if needs:
+                attach_predictions(needs)
+            serializer = self.get_serializer(posts, many=True)
+            return self.get_paginated_response(serializer.data)
+        posts = list(queryset)
+        needs = [p for p in posts if p.predicted_tag is None and p.fake_probability is None]
+        if needs:
+            attach_predictions(needs)
+        serializer = self.get_serializer(posts, many=True)
+        return Response(serializer.data)
+
     def retrieve(self, request, *args, **kwargs):
         post = Post.objects.select_related('author', 'category', 'moderated_by').filter(pk=kwargs.get('pk')).first()
         if post is None:
@@ -107,6 +126,9 @@ class PostViewSet(viewsets.ModelViewSet):
         if post.status != Post.STATUS_PUBLISHED and not (is_owner or is_admin):
             raise NotFound()
 
+        # Only compute prediction if not persisted
+        if post.predicted_tag is None and post.fake_probability is None:
+            post = attach_predictions([post])[0]
         serializer = self.get_serializer(post)
         return Response(serializer.data)
 
@@ -181,7 +203,11 @@ class PostViewSet(viewsets.ModelViewSet):
     def by_category(self, request):
         category_id = request.query_params.get('category_id')
         if category_id:
-            posts = Post.objects.filter(category_id=category_id).order_by('-created_at')
+            posts_qs = Post.objects.filter(category_id=category_id).order_by('-created_at')
+            posts = list(posts_qs)
+            needs = [p for p in posts if p.predicted_tag is None and p.fake_probability is None]
+            if needs:
+                attach_predictions(needs)
             serializer = self.get_serializer(posts, many=True)
             return Response(serializer.data)
         return Response({'error': 'category_id required'}, status=status.HTTP_400_BAD_REQUEST)
@@ -257,6 +283,10 @@ def admin_dashboard(request):
         'total_comments': Comment.objects.count(),
     }
 
+    posts = list(posts)
+    needs = [p for p in posts if p.predicted_tag is None and p.fake_probability is None]
+    if needs:
+        attach_predictions(needs)
     post_serializer = PostSerializer(posts, many=True, context={'request': request})
 
     return Response({
@@ -288,6 +318,42 @@ def admin_dashboard(request):
         ],
         'posts': post_serializer.data,
     })
+
+
+@api_view(['POST'])
+@permission_classes([IsStaffOrSuperuser])
+def admin_recompute_predictions(request):
+    """Recompute ML predictions for posts and persist them.
+
+    Accepts optional JSON body: { "ids": [1,2,3] } to limit to specific posts.
+    If no ids provided, recomputes for all posts (use with caution).
+    """
+    ids = request.data.get('ids') if isinstance(request.data, dict) else None
+    try:
+        if ids:
+            posts_qs = Post.objects.filter(id__in=ids).select_related('author', 'category')
+        else:
+            posts_qs = Post.objects.select_related('author', 'category').all()
+
+        posts = list(posts_qs.order_by('-created_at'))
+        attach_predictions(posts)
+
+        updated = 0
+        for post in posts:
+            pred = getattr(post, '_ml_prediction', None)
+            if not pred:
+                continue
+            post.predicted_label = pred.get('predicted_label')
+            post.predicted_tag = pred.get('predicted_tag')
+            post.predicted_tag_vi = pred.get('predicted_tag_vi')
+            post.fake_probability = pred.get('fake_probability')
+            post.save(update_fields=['predicted_label', 'predicted_tag', 'predicted_tag_vi', 'fake_probability'])
+            updated += 1
+
+        return Response({'message': 'Recomputed predictions', 'updated': updated})
+    except Exception as exc:
+        logger.exception('Failed to recompute predictions via API')
+        return Response({'detail': 'Failed to recompute predictions'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(['GET', 'PATCH'])

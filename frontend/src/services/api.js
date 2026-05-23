@@ -82,6 +82,13 @@ export async function getAdminDashboard(params = {}) {
 	return request(`/admin/dashboard/${toQueryString(params)}`);
 }
 
+export async function recomputeAdminPredictions(payload = {}) {
+	return request(`/admin/predictions/recompute/`, {
+		method: "POST",
+		body: JSON.stringify(payload),
+	});
+}
+
 export async function updateAdminUserRole(userId, payload) {
 	return request(`/admin/users/${userId}/`, {
 		method: "PATCH",

@@ -45,6 +45,11 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
+    # Persisted ML prediction fields (nullable to avoid forcing immediate backfill)
+    predicted_label = models.IntegerField(null=True, blank=True, help_text='0=real, 1=fake', db_index=True)
+    predicted_tag = models.CharField(max_length=16, null=True, blank=True, db_index=True)
+    predicted_tag_vi = models.CharField(max_length=32, null=True, blank=True)
+    fake_probability = models.FloatField(null=True, blank=True)
     
     def __str__(self):
         return self.title

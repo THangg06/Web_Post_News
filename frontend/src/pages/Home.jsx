@@ -115,6 +115,11 @@ function Home() {
           content: post.content,
           image: post.image || "",
           views: post.views ?? 0,
+          // prediction fields from backend (may be persisted or computed)
+          predicted_tag: post.predicted_tag,
+          predicted_label: post.predicted_label,
+          predicted_tag_vi: post.predicted_tag_vi,
+          fake_probability: post.fake_probability,
         }));
         console.log("✅ Mapped posts:", mappedPosts);
 

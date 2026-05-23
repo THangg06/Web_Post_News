@@ -8,6 +8,11 @@ function PostCard({ post = {} }) {
   const [likes, setLikes] = useState(124);
   const [showComments, setShowComments] = useState(false);
 
+  const predictionTag = post.predicted_tag || (post.predicted_label === 1 ? "fake" : "real");
+  const predictionText = post.predicted_tag_vi || (predictionTag === "fake" ? "nghi fake" : "real");
+  const predictionStyles = predictionTag === "fake"
+    ? "bg-red-600 text-white"
+    : "bg-emerald-600 text-white";
   const authorName = typeof post.author === "string"
     ? post.author
     : post.author?.username || "Anonymous";
@@ -41,7 +46,11 @@ function PostCard({ post = {} }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden mb-4">
+    <div className="relative bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden mb-4">
+      <div className={`absolute top-3 right-3 z-10 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide shadow ${predictionStyles}`}>
+        {predictionText}
+      </div>
+
       {/* Image */}
       {postData.image && (
         <img

@@ -138,6 +138,10 @@ function CreatePostModal({ onPostCreate = () => {} }) {
         avatar: displayAvatar,
         time: createdPost.created_at ? new Date(createdPost.created_at).toLocaleString("en-US") : "Just now",
         views: createdPost.views ?? 0,
+        predicted_label: createdPost.predicted_label,
+        predicted_tag: createdPost.predicted_tag,
+        predicted_tag_vi: createdPost.predicted_tag_vi,
+        fake_probability: createdPost.fake_probability,
       });
 
       setFormData({
@@ -221,11 +225,11 @@ function CreatePostModal({ onPostCreate = () => {} }) {
                 />
                 <div>
                   <p className="font-bold text-gray-900">{currentUser?.username || "You"}</p>
-                  <select className="text-sm bg-gray-100 rounded px-2 py-1">
+                  {/* <select className="text-sm bg-gray-100 rounded px-2 py-1">
                     <option>👥 Public</option>
                     <option>👤 Only me</option>
                     <option>👫 Friends</option>
-                  </select>
+                  </select> */}
                 </div>
               </div>
 
